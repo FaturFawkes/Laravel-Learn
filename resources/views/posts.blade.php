@@ -8,6 +8,9 @@
                 @if(request('category'))
                     <input type="hidden" name="category" value="{{ request('category') }}">
                 @endif
+                @if(request('author'))
+                    <input type="hidden" name="author" value="{{ request('author') }}">
+                @endif
                 <div class="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
                     <div class="relative w-full">
                         <label for="search"
@@ -40,7 +43,7 @@
     <div class="py-8 mx-auto max-w-screen-xl lg:py-4 lg:px-0 ">
         <div class="grid gap-8 lg:grid-cols-3 md:grid-cols-2 py-4">
 
-            @foreach ($posts as $post)
+            @forelse ($posts as $post)
                 <article
                     class="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                     <div class="flex justify-between items-center mb-5 text-gray-500">
@@ -63,7 +66,7 @@
                             <img class="w-7 h-7 rounded-full"
                                 src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
                                 alt="{{ $post->author->name }}" />
-                            <a href="/authors/{{ $post->author->username }}">
+                            <a href="/posts?author={{ $post->author->username }}">
                                 <span class="font-medium text-xs dark:text-white">
                                     {{ $post->author->name }}
                                 </span>
@@ -81,7 +84,12 @@
                         </a>
                     </div>
                 </article>
-            @endforeach
+            @empty
+                <div>
+                    <p class="font-semibold text-xl my-4">Article not found</p>
+                    <a href="/posts" class="block text-blue-600">&laquo; Back to all posts</a>
+                </div>
+            @endforelse
 
         </div>
     </div>
