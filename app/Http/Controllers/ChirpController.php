@@ -6,6 +6,7 @@ use App\Http\Requests\StoreChirpRequest;
 use App\Http\Requests\UpdateChirpRequest;
 use App\Models\Chirp;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ChirpController extends Controller
 {
@@ -28,9 +29,15 @@ class ChirpController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreChirpRequest $request)
+    public function store(StoreChirpRequest $request): RedirectResponse
     {
-        //
+        $validate = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+
+        $request->user()->chirps()->create($validate);
+
+        return redirect(route('chirps.index'));
     }
 
     /**
